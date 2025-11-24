@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🎴 プロジェクト概要
 
-## Getting Started
+**テーマ：**
 
-First, run the development server:
+「花札を知らない人でも、直感的に遊び方がわかる花札アプリ」
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**コンセプト：**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 任天堂のビジョンに合わせて
+  **「誰でも簡単に・迷わず遊べる」** を最重要にする
+- 花札というニッチな遊びのハードルを、
+  **UI/UX とアシスト機能で下げる**
+- ルールガチ勢向けじゃなく、
+  **初めて触る人〜ライト層向け**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎯 MVP で実装する範囲
 
-## Learn More
+### 1. 対戦モード（プレイヤー vs CPU）
 
-To learn more about Next.js, take a look at the following resources:
+- プレイヤー 1 vs CPU1 の基本的な花札対戦
+- 簡略化したルールで OK（まずは代表的な役だけでもいい）
+- 画面上には：
+  - プレイヤーの手札
+  - CPU 側（必要なら簡易表示）
+  - 場札
+  - 山札 & 捨て札
+  - 得点・ターン表示
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. アシスト機能（これがこのアプリの“肝”）
 
-## Deploy on Vercel
+**目的：ルール知らなくてもそれっぽく打てるようにする**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 出せる札のハイライト
+  - 同じ月（絵柄）の札が場にあるとき → 手札を光らせる
+- 「おすすめ手」の表示
+  - 一手ごとの“強さ”を内部でスコア化して、強い手にだけ
+    - 枠のエフェクト
+    - ⭐️ マーク or 「オススメ」ラベル
+- 役が成立したときのポップアップ
+  - 「○○ という役ができました！（〜〜な役です）」と解説
+- アシストは設定で ON/OFF 切り替え可能
+  - 初心者モード：アシスト強め
+  - 通常モード：控えめ
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### 3. 遊び方画面（How to Play）
+
+**テキストベタ書きではなく、“見てわかる”形式にする**
+
+- 花札の超基本ルール：
+  - 12 ヶ月 × 各 4 枚のカード
+  - 同じ月を合わせて取る
+  - 集めた札の組み合わせ（役）で点数
+- スライド / ステップ形式で 1 トピックずつ簡潔に
+  - 札の種類（光・タネ・短冊・カス）
+  - 1 ターンの流れ（出す → 取る → めくる）
+  - 役の考え方（コンボ感覚）
+- 図や簡単なイラスト中心で、文字量は少なめ
+
+---
+
+### 4. 役の図鑑ページ
+
+**代表的な役だけでも OK（まずは少数精鋭で）**
+
+- 役ごとに：
+  - 役名
+  - 必要な札の組み合わせのイメージ
+  - 点数（ざっくり）
+  - 一言説明（どんな意図の役か）
+- プレイ中に役ができたとき → その役の図鑑詳細へリンクできるとなお良い
+
+---
+
+## 🧱 技術スタック
+
+### メイン
+
+- 言語：**TypeScript**
+- フレームワーク：**Next.js（React ベース）**
+  - App Router 前提
+  - フロントは基本 `use client` なクライアントコンポーネントで OK
+- 状態管理：**Zustand**
+  - 山札 / 手札 / 場札 / 得点 / ターン / アシスト ON/OFF などを 1 つのストアで管理
+- スタイル：tailwind.css
+
+### ページ構成イメージ
+
+- `/` : ホーム（コンセプト・「遊ぶ」ボタン）
+- `/play` : 対戦モード（メイン画面）
+- `/how-to-play` : 遊び方
+- `/yaku` : 役図鑑
+
+※ Next.js は「ページとレイアウトを整理するための枠組み」として使うイメージ。
