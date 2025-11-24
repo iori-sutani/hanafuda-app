@@ -97,3 +97,48 @@
 - `/yaku` : 役図鑑
 
 ※ Next.js は「ページとレイアウトを整理するための枠組み」として使うイメージ。
+
+## 🚀 セットアップ
+
+開発を始めるための基本手順です。Windows の PowerShell を想定したコマンド例を示します。
+
+### 必要環境
+
+- Node.js 18 以上（推奨）
+- npm（Node に付属）
+
+### 依存インストール
+
+リポジトリをクローンしたら依存をインストールします。今回のリポジトリでは `zustand` が使用されているため、明示的に追加します。
+
+```powershell
+npm install
+npm install zustand
+```
+
+※ すでに `tailwindcss` 等が devDependencies に入っていますが、初回セットアップ時に Tailwind の設定がない場合は以下を実行して初期化してください（通常は不要です）：
+
+```powershell
+npx tailwindcss init -p
+```
+
+### 開発サーバ起動
+
+```powershell
+npm run dev
+```
+
+ブラウザで `http://localhost:3000` を開いて動作を確認してください。
+
+### 便利なスクリプト
+
+- `npm run dev` : 開発用サーバ起動
+- `npm run build` : 本番ビルド
+- `npm run start` : 本番サーバ起動
+- `npm run lint` : ESLint を実行
+
+---
+
+### 補足
+
+- 既にこのリポジトリにゲームの骨組み（`/play` ページ、Zustand ストア、簡易コンポーネント）を追加しています。`zustand` をインストールし `npm run dev` で動作確認してください。
